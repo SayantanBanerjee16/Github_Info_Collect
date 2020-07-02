@@ -1,4 +1,4 @@
-package com.sayantanbanerjee.github
+package com.sayantanbanerjee.github.basegithub
 
 data class githubBase(
 

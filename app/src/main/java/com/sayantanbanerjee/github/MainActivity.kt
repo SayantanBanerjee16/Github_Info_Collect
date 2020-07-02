@@ -6,7 +6,11 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
+import com.sayantanbanerjee.github.basegithub.githubBase
 import com.sayantanbanerjee.github.contribution.contribution
+import com.sayantanbanerjee.github.interfaceholder.baseService
+import com.sayantanbanerjee.github.interfaceholder.contributionService
+import com.sayantanbanerjee.github.retrofitInstance.RetrofitInstance
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             .create(baseService::class.java)
 
         val responseLiveData : LiveData<Response<githubBase>> = liveData{
-            val response = retrofitService.getBaseInfo()
+            val response = retrofitService.getBaseInfo("sayantanbanerjee16")
             emit(response)
         }
 
@@ -60,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             .create(contributionService::class.java)
 
         val contributionLiveData : LiveData<Response<contribution>> = liveData{
-            val response = contributionService.getContributionInfo()
+            val response = contributionService.getContributionInfo("sayantanbanerjee16")
             emit(response)
         }
 

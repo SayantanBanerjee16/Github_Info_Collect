@@ -1,4 +1,4 @@
-package com.sayantanbanerjee.github
+package com.sayantanbanerjee.github.retrofitInstance
 
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
