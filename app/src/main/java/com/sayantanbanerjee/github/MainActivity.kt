@@ -6,17 +6,23 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
+import com.sayantanbanerjee.github.contribution.contribution
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var disp : TextView
+    private lateinit var displayContribution : TextView
+    private lateinit var contribution: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         disp = findViewById(R.id.disp)
+        displayContribution = findViewById(R.id.displayContribution)
+
+        //BASE INFO
 
         val retrofitService = RetrofitInstance.getRetrofitInstance("https://api.github.com/users/")
             .create(baseService::class.java)
@@ -45,6 +51,27 @@ class MainActivity : AppCompatActivity() {
 
             disp.text = display
 
+        })
+
+        //----------------------------------------------
+        // CONTRIBUTION INFO
+
+        val contributionService = RetrofitInstance.getRetrofitInstance("https://github-contributions-api.now.sh/v1/")
+            .create(contributionService::class.java)
+
+        val contributionLiveData : LiveData<Response<contribution>> = liveData{
+            val response = contributionService.getContributionInfo()
+            emit(response)
+        }
+
+        contributionLiveData.observe(this, Observer {
+            contribution = "CONTRIBUTIONS : \n\n"
+            val contributionList = it.body()
+            for(i in 0 .. (contributionList!!.years.size - 1)){
+                val yearItem = contributionList.years[i]
+                contribution += yearItem.year + " : "+ yearItem.total + "\n"
+            }
+            displayContribution.text = contribution
         })
     }
 }
